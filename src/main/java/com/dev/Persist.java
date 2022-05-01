@@ -32,6 +32,22 @@ public class Persist {
         return token;
     }
 
+    public String getTurnByUsername(String username, String password, String turn) {
+        String token = null;
+        Session session = sessionFactory.openSession();
+        UserObject userObject = (UserObject) session.createQuery("FROM UserObject WHERE username = :username AND password = :password AND turn = :turn")
+                .setParameter("username", username)
+                .setParameter("password", password)
+                .setParameter("turn", turn)
+                .uniqueResult();
+        session.close();
+        if (userObject != null) {
+            token = userObject.getToken();
+        }
+        return token;
+    }
+
+
     public boolean addAccount (UserObject userObject) {
         boolean success = false;
         Session session = sessionFactory.openSession();
@@ -44,6 +60,31 @@ public class Persist {
         }
         return success;
     }
+
+
+
+    public boolean addTurn (String token, String turn) {
+        boolean success = false;
+        Integer userId = getUserIdByToken(token);
+        if (userId != null) {
+            UserObject userObject = new UserObject();
+            userObject.setId(userId);
+            userObject.setTurn(turn);
+            Session session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+            session.saveOrUpdate(postObject);
+            transaction.commit();
+            session.close();
+            if (postObject.getId() > 0) {
+                success = true;
+            }
+        }
+        return success;
+    }
+
+
+
+
 
     public boolean addPost (String token, String content) {
         boolean success = false;

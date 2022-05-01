@@ -1,5 +1,6 @@
 package com.dev.controllers;
 
+
 import com.dev.Persist;
 import com.dev.objects.PostObject;
 import com.dev.objects.UserObject;
@@ -39,6 +40,12 @@ public class TestController {
         String token = persist.getTokenByUsernameAndPassword(username, password);
         return token;
     }
+//
+  //  @RequestMapping("add-turn")
+    ///public String newTurn (String username, String password ,String turn) {
+       // String token = persist.getTurnByUsername(username, password, turn);
+       // return token;
+   // }
 
     @RequestMapping("create-account")
     public boolean createAccount (String username, String password) {
@@ -70,6 +77,8 @@ public class TestController {
         }
         return persist.addPost(token, content);
     }
+
+
 
 
     @RequestMapping("get-posts")
@@ -105,7 +114,10 @@ public class TestController {
 
     }
 
-
+    @RequestMapping(value = "/testBarak", method = {RequestMethod.GET, RequestMethod.POST})
+    public Object test (){
+        return "BARAK";
+    }
 
 
 

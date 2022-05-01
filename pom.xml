@@ -14,6 +14,7 @@
 
 
 
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -50,11 +51,15 @@
             <version>1.9</version>
         </dependency>
 
+
+
+
         <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -116,6 +121,8 @@
             <artifactId>reflections</artifactId>
             <version>0.9.11</version>
         </dependency>
+
+
 
         <!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
         <dependency>
@@ -195,7 +202,7 @@
 
 
     </dependencies>
-	
+
     <build>
         <plugins>
             <plugin>

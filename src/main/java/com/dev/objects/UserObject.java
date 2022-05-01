@@ -20,6 +20,10 @@ public class UserObject {
     @Column
     private String token;
 
+
+    @Column
+    private String turn;
+
     @Transient
     private List<PostObject> posts;
 
@@ -46,6 +50,8 @@ public class UserObject {
     public void setToken(String token) {
         this.token = token;
     }
+
+
 
     public void addPost (String post) {
     }
