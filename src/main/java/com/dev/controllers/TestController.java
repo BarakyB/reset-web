@@ -3,6 +3,7 @@ package com.dev.controllers;
 
 import com.dev.Persist;
 import com.dev.objects.PostObject;
+import com.dev.objects.TreatmentObject;
 import com.dev.objects.UserObject;
 import com.dev.utils.Utils;
 import org.hibernate.engine.jdbc.StreamUtils;
@@ -40,12 +41,6 @@ public class TestController {
         String token = persist.getTokenByUsernameAndPassword(username, password);
         return token;
     }
-//
-  //  @RequestMapping("add-turn")
-    ///public String newTurn (String username, String password ,String turn) {
-       // String token = persist.getTurnByUsername(username, password, turn);
-       // return token;
-   // }
 
     @RequestMapping("create-account")
     public boolean createAccount (String username, String password) {
@@ -64,6 +59,29 @@ public class TestController {
     }
 
 
+
+
+    @RequestMapping(value = "/add-turn", headers = "content-type=multipart/*", method = RequestMethod.POST)
+    public boolean addTurn (@RequestParam(value = "file", required = false) MultipartFile multipartFile, String token, String turn) {
+        if (multipartFile != null) {
+            try {
+                File fileOnDisk = new File("C:\\Users\\user\\Downloads\\predictions-new1\\2.jpg");
+                multipartFile.transferTo(fileOnDisk);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return persist.addTurn(token, turn);
+    }
+
+
+
+
+
+
+
+
     @RequestMapping(value = "/add-post", headers = "content-type=multipart/*", method = RequestMethod.POST)
     public boolean addPost (@RequestParam(value = "file", required = false) MultipartFile multipartFile, String token, String content) {
         if (multipartFile != null) {
@@ -79,11 +97,13 @@ public class TestController {
     }
 
 
-
-
     @RequestMapping("get-posts")
     public List<PostObject> getPosts (String token) {
         return persist.getPostsByUser(token);
+    }
+
+    @RequestMapping("get-turn")
+    public List<TreatmentObject> getTurns (String token) {return persist.getTurnByUser(token);
     }
 
     @RequestMapping("remove-post")
@@ -114,10 +134,7 @@ public class TestController {
 
     }
 
-    @RequestMapping(value = "/testBarak", method = {RequestMethod.GET, RequestMethod.POST})
-    public Object test (){
-        return "BARAK";
-    }
+
 
 
 

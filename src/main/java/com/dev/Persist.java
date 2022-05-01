@@ -1,6 +1,7 @@
 package com.dev;
 
 import com.dev.objects.PostObject;
+import com.dev.objects.TreatmentObject;
 import com.dev.objects.UserObject;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -32,22 +33,6 @@ public class Persist {
         return token;
     }
 
-    public String getTurnByUsername(String username, String password, String turn) {
-        String token = null;
-        Session session = sessionFactory.openSession();
-        UserObject userObject = (UserObject) session.createQuery("FROM UserObject WHERE username = :username AND password = :password AND turn = :turn")
-                .setParameter("username", username)
-                .setParameter("password", password)
-                .setParameter("turn", turn)
-                .uniqueResult();
-        session.close();
-        if (userObject != null) {
-            token = userObject.getToken();
-        }
-        return token;
-    }
-
-
     public boolean addAccount (UserObject userObject) {
         boolean success = false;
         Session session = sessionFactory.openSession();
@@ -61,27 +46,27 @@ public class Persist {
         return success;
     }
 
-
-
+    ////new  function for add turn
     public boolean addTurn (String token, String turn) {
         boolean success = false;
         Integer userId = getUserIdByToken(token);
         if (userId != null) {
+            TreatmentObject treatmentObject = new TreatmentObject();
             UserObject userObject = new UserObject();
             userObject.setId(userId);
-            userObject.setTurn(turn);
+            treatmentObject.setUserObject(userObject);
+            treatmentObject.setTurn(turn);
             Session session = sessionFactory.openSession();
             Transaction transaction = session.beginTransaction();
-            session.saveOrUpdate(postObject);
+            session.saveOrUpdate(treatmentObject);
             transaction.commit();
             session.close();
-            if (postObject.getId() > 0) {
+            if (treatmentObject.getId() > 0) {
                 success = true;
             }
         }
         return success;
     }
-
 
 
 
@@ -118,6 +103,20 @@ public class Persist {
             id = userObject.getId();
         }
         return id;
+
+
+    }///new  function to get list turn by user
+    public List<TreatmentObject> getTurnByUser (String token) {
+        List<TreatmentObject> treatmentObjects = null;
+        Session session = sessionFactory.openSession();
+        treatmentObjects = (List<TreatmentObject>)session.createQuery(
+                        "FROM TreatmentObject " +
+                                "WHERE userObject.token = :token " +
+                                "ORDER BY id DESC ")
+                .setParameter("token", token)
+                .list();
+        session.close();
+        return treatmentObjects;
     }
 
     public List<PostObject> getPostsByUser (String token) {

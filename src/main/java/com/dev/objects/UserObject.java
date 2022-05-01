@@ -20,12 +20,11 @@ public class UserObject {
     @Column
     private String token;
 
-
-    @Column
-    private String turn;
-
     @Transient
     private List<PostObject> posts;
+
+    @Transient
+    private List<TreatmentObject> treatments;
 
     public String getUsername() {
         return username;
@@ -51,8 +50,6 @@ public class UserObject {
         this.token = token;
     }
 
-
-
     public void addPost (String post) {
     }
 
@@ -62,6 +59,16 @@ public class UserObject {
 
     public void setPosts(List<PostObject> posts) {
         this.posts = posts;
+    }
+
+    public void addTurn (String turn){}
+
+    public List<TreatmentObject> getTreatments() {
+        return treatments;
+    }
+
+    public void setTreatments(List<TreatmentObject> treatments) {
+        this.treatments = treatments;
     }
 
     public int getId() {
